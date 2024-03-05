@@ -1,29 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
+import axios  from 'axios';
 const Delivering = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const bagItems = location.state && location.state.bagItems;
   const userId = location.state && location.state.userId;
   console.log(userId);
+  console.log(bagItems);
+  const transformedBagItems = bagItems.map(item => ({
+  product: item.product,
+  quantity: item.quantity.toString(),
+  key: item.key.toString(),
+  _id: item._id,
+  name: item.name,
+  desc: item.desc,
+  img: item.img,
+  price: item.price.toString(),
+  rating: item.rating
+}));
+
+console.log(transformedBagItems);
+
   const totalTime = 60; // Total time in seconds
   const [timeLeft, setTimeLeft] = useState(totalTime);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
-    }, 1000);
+    setTimeLeft((prevTime) => Math.max(prevTime - 1, 0));
+  }, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    if (timeLeft === 0) {
-      // Redirect to the order page once the time is completed
-      navigate('/order', { state: { userId } });
+  const addOrder = async () => {
+    try {
+      const response = await axios.post(`http://localhost:3000/orders/${userId}`, transformedBagItems);
+
+      if (response.status === 200) {
+        alert('Your order has been placed!');
+      } else {
+        alert('Oops, something went wrong');
+      }
+    } catch (error) {
+      console.error('Error placing order:', error);
+      alert('Oops, something went wrong');
     }
-  }, [timeLeft, navigate]);
+  };
+
+  addOrder();
+}, [userId, bagItems]);
 
   const progressPercentage = ((totalTime - timeLeft) / totalTime) * 100;
 
