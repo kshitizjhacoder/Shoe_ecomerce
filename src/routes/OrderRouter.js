@@ -3,9 +3,9 @@ const router = express.Router();
 const orderController = require('../controllers/orderedAll');
 
 // GET all orders for a user
-router.get('/orders/:id', orderController.orderAll);
+router.get('/:id', orderController.orderAll);
 
 // POST a new order or increase quantity if already exists
-router.post('/orders', orderController.addOrder);
+router.post('/:id', orderController.addOrder);
 
 module.exports = router;

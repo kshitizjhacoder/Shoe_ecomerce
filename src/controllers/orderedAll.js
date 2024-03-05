@@ -4,12 +4,7 @@ const User = require('../models/User');
 const orderAll = async (req, res) => {
     try {
         const userId = req.params.id;
-
-        // Check if no ID is provided
-        if (!userId) {
-            return res.status(400).json({ error: 'No ID provided' });
-        }
-
+        console.log(userId);
         // Get the user from the database using their ID
         const foundUser = await User.findById(userId);
 
@@ -30,11 +25,13 @@ const orderAll = async (req, res) => {
 };
 
 const addOrder = async (req, res) => {
+    
     try {
-        const { user, product, quantity, time } = req.body;
-        
+        const user = req.params.id;
+        const { product, quantity, desc, img, key, name, price, rating } = req.body;
+        // quantity = Number(quantity);
         // Validate required fields
-        if (!user || !product || !quantity || !time) {
+        if ( !user||!product || !quantity || !desc || !img || !key || !name || !price || !rating) {
             return res.status(400).json({ error: 'Missing fields' });
         }
 
@@ -43,27 +40,21 @@ const addOrder = async (req, res) => {
         if (!existingUser) {
             return res.status(400).json({ error: 'Invalid user' });
         }
-
-        // Check if an order already exists for the user and product
-        const existingOrder = await Ordered.findOne({ user, product });
-
-        if (existingOrder) {
-            // If an order exists, increase the quantity
-            existingOrder.quantity += 1;
-            await existingOrder.save();
-            return res.status(201).json(existingOrder);
-        }
-
         // If no existing order, create a new one
         const newOrder = new Ordered({
             user,
             product,
             quantity,
-            date: new Date(time),
+            desc,
+            img,
+            key,
+            name,
+            price,
+            rating,
         });
         
         await newOrder.save();
-        return res.status(201).json(newOrder);
+        return res.status(200).json(newOrder);
     } catch (err) {
         console.error('Error adding order:', err);
         return res.status(500).json({ error: 'Server error' });

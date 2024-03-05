@@ -22,7 +22,7 @@ const Navbar = () => {
           <L to="/bag" className="text-white ml-4">
             Bag
           </L>
-          <L to="/ordered" className="text-white ml-4">
+          <L to="/order" className="text-white ml-4">
             Orders
           </L>
           </div>

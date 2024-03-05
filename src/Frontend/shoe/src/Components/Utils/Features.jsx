@@ -6,6 +6,10 @@ const Features = ({ onCardClick, latestVisits }) => {
   let features = Array.isArray(latestVisits) ? latestVisits : [];
   if (features.length > 0) {
     features = features[0];
+    // console.log(features);
+  }
+  if (!Array.isArray(features) || features.length === 0) {
+    return <div></div>;
   }
   const cardsPerPage = 5;
   const totalCards = features.length;
@@ -26,7 +30,7 @@ const Features = ({ onCardClick, latestVisits }) => {
   const visibleFeatures = features.slice(startIndex, endIndex);
 
   const handleClick = (feature) => {
-    console.log("Card clicked");
+    // console.log(feature);
     onCardClick(feature);
   };
 
@@ -46,7 +50,7 @@ const Features = ({ onCardClick, latestVisits }) => {
                 image={feature.product.img}
                 name={feature.product.name}
                 price={feature.product.price}
-                onClick={() => handleClick(feature)}
+                onClick={() => handleClick(feature.product)}
                 onMouseOver={() => console.log('Mouse over')}
               />
             )}

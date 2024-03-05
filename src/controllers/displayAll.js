@@ -17,6 +17,21 @@ const displayAll = async (req, res) => {
     }
 };
 
+const displayspecific = async (req, res) => {
+    try {
+        let productId = req.params.id;
+        let product = await Product.findById(productId).exec();
+        if (!product) {
+            return res.status(404).json({message: 'Could not find product.' });
+        }
+        return res.json(product);
+    } catch (err) {
+        console.log("ERROR GETTING", err);
+        return res.status(500);
+    }
+};
+
 module.exports = {
     displayAll,
+    displayspecific
 };

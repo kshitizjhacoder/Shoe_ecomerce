@@ -1,6 +1,8 @@
 import React from 'react'
 
-function About({selectedCard}) {
+function About({ selectedCard, AddedToCart }) {
+    // console.log(selectedCard);
+    
 return (
     <div>
         {selectedCard ? (
@@ -9,8 +11,11 @@ return (
                 <div className=" mt-8 p-8 flex flex-col ">
                     <p className='text-3xl'>{selectedCard.name}</p>
                     <p className="text-xl">{selectedCard.desc}</p>
+                    <p className='text-xl'>Price: {selectedCard.price}</p>
+                    <p className='text-xl'>Rating: {selectedCard.rating}</p>
+                    
                     <button  
-                        onClick={() => alert(`${selectedCard.name} is added to your collection!`)}  
+                        onClick={() => AddedToCart(selectedCard)}  
                         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" 
                     >Add To Bag</button>
                 </div>
